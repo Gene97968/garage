@@ -1,0 +1,150 @@
+<!doctype html>
+<html lang="it">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#0b0f14">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Garage">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" href="icon-192.png">
+<link rel="apple-touch-icon" href="icon-180.png">
+<title>Garage</title>
+<style>
+:root{--bg:#0b0f14;--card:#141a22;--line:#232c38;--ink:#eef2f7;--soft:#8a97a8;--acc:#ff6a3d;--red:#ff5a5a;--amber:#ffb23d;--ok:#4cc38a;color-scheme:dark;font-family:-apple-system,system-ui,sans-serif}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);padding:env(safe-area-inset-top) 0 env(safe-area-inset-bottom)}
+.wrap{max-width:640px;margin:auto;padding:0 16px 48px}
+
+/* hero a tre piani: "308" sullo sfondo, auto al centro, titolo davanti */
+.hero{position:relative;height:60svh;min-height:380px;max-height:560px;margin:0 -16px;overflow:hidden;isolation:isolate}
+.hero i{position:absolute;right:4px;top:2%;z-index:-2;font-weight:900;font-size:clamp(170px,56vw,300px);line-height:1;font-style:normal;color:transparent;-webkit-text-stroke:2px var(--line)}
+.car{position:absolute;left:0;width:100%;top:15%;animation:enter 1s cubic-bezier(.2,.8,.2,1) both}
+.car::after{content:"";position:absolute;left:6%;right:6%;bottom:-10%;height:34%;z-index:-1;background:radial-gradient(closest-side,#ff6a3d66,transparent)}
+.car img{display:block;width:100%;height:auto;filter:drop-shadow(0 24px 24px #000a)}
+.hero h1{position:absolute;left:16px;bottom:26px;margin:0;font-size:clamp(46px,15vw,78px);line-height:.95;letter-spacing:-.03em}
+.hero p{position:absolute;left:16px;bottom:0;margin:0;color:var(--soft)}
+
+.bar{position:fixed;inset:0 0 auto;z-index:5;padding:calc(env(safe-area-inset-top) + 10px) 16px 10px;background:#0b0f14d9;-webkit-backdrop-filter:blur(14px);backdrop-filter:blur(14px);border-bottom:1px solid var(--line);font-weight:700;opacity:0;pointer-events:none}
+
+.card{background:var(--card);border:1px solid var(--line);border-radius:20px;padding:18px;margin:14px 0}
+h2{font-size:13px;letter-spacing:.08em;text-transform:uppercase;color:var(--soft);margin:0 0 14px}
+.stats,.grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.stat b{display:block;font-size:30px;letter-spacing:-.02em;color:var(--acc)}
+.full{grid-column:1/-1}
+label{display:block;font-size:13px;font-weight:600;color:var(--soft);margin-bottom:6px}
+input,select,textarea{width:100%;min-height:46px;padding:11px 12px;border:1px solid var(--line);border-radius:12px;background:var(--bg);color:var(--ink);font:inherit;font-size:16px} /* 16px: evita lo zoom di iOS */
+textarea{min-height:80px;resize:vertical}
+button,.btn{display:inline-flex;align-items:center;justify-content:center;min-height:46px;padding:0 16px;border:0;border-radius:12px;background:var(--acc);color:#1a0d08;font:inherit;font-weight:700;cursor:pointer}
+.ghost{background:#1d2631;color:var(--ink)}
+.actions{display:flex;flex-wrap:wrap;gap:8px;margin-top:14px}
+.entry,.due{display:grid;gap:4px;padding:14px 0;border-top:1px solid var(--line)}
+.entry:first-child,.due:first-child{border-top:0}
+.top{display:flex;justify-content:space-between;gap:10px}
+.muted{color:var(--soft);font-size:14px}
+.empty{color:var(--soft);text-align:center;padding:18px 0}
+.entry button{justify-self:start;min-height:38px;margin-top:6px;font-size:14px}
+.due{border-left:4px solid var(--ok);padding-left:12px;border-top:0;margin-bottom:10px;background:var(--bg);border-radius:12px;padding:12px}
+.due[data-l="1"]{border-left-color:var(--amber)}.due[data-l="2"]{border-left-color:var(--red)}
+.due b{display:block}
+#filter{margin-bottom:6px}
+
+@supports(animation-timeline:scroll()){
+ .bar{animation:fade linear both;animation-timeline:scroll(root);animation-range:220px 300px}
+ .hero i{animation:drift linear both;animation-timeline:scroll(root);animation-range:0 70svh}
+ .car img{animation:away linear both;animation-timeline:scroll(root);animation-range:0 60svh}
+ .card,.entry{animation:rise linear both;animation-timeline:view();animation-range:entry 0% entry 55%}
+}
+@keyframes enter{from{opacity:0;transform:translateX(18%)}}
+@keyframes fade{to{opacity:1}}
+@keyframes drift{to{transform:translateY(140px)}}
+@keyframes away{to{transform:translateY(-36px) scale(.9);opacity:.2}}
+@keyframes rise{from{opacity:0;transform:translateY(30px)}}
+@media(prefers-reduced-motion:reduce){*{animation:none!important}.bar{display:none}}
+@media(max-width:420px){.grid{grid-template-columns:1fr}.full{grid-column:auto}}
+</style>
+</head>
+<body>
+<div class="bar">🚗 Garage · Peugeot 308</div>
+<div class="wrap">
+<header class="hero"><i>308</i><div class="car"><img src="car.webp" alt="Peugeot 308" width="1100" height="801"></div><h1>Garage</h1><p>Peugeot 308 · 1.5 BlueHDi 130 EAT8</p></header>
+
+<section class="card"><h2>Riepilogo</h2><div class="stats">
+<div class="stat"><b id="count">0</b><span class="muted">Interventi</span></div>
+<div class="stat"><b id="spent">0 €</b><span class="muted">Spesa totale</span></div>
+</div></section>
+
+<section class="card" id="duesCard" hidden><h2>Prossime scadenze</h2><div id="dues"></div></section>
+
+<section class="card"><h2>Nuovo intervento</h2>
+<form id="form"><div class="grid">
+<div class="full"><label for="type">Tipo</label><select id="type"></select></div>
+<div><label for="date">Data</label><input id="date" type="date" required></div>
+<div><label for="km">Chilometri</label><input id="km" type="number" inputmode="numeric" min="0" placeholder="42000" required></div>
+<div class="full"><label for="cost">Costo (€)</label><input id="cost" type="number" inputmode="decimal" min="0" step="0.01" placeholder="0,00"></div>
+<div class="full"><label for="details">Prodotto o officina</label><input id="details" placeholder="Marca, gomme estive/invernali…"></div>
+<div><label for="dueKm">Prossimo a (km)</label><input id="dueKm" type="number" inputmode="numeric" min="0" placeholder="opzionale"></div>
+<div><label for="dueDate">Oppure entro il</label><input id="dueDate" type="date"></div>
+<div class="full"><label for="notes">Note</label><textarea id="notes" placeholder="Quantità, lavori eseguiti…"></textarea></div>
+</div><div class="actions"><button>＋ Salva</button><button type="reset" class="ghost">Pulisci</button></div></form></section>
+
+<section class="card"><h2>Cronologia</h2><select id="filter" aria-label="Filtra per tipo"></select><div id="history"></div></section>
+
+<section class="card"><h2>Backup</h2>
+<p class="muted">I dati restano su questo dispositivo. Esporta ogni tanto un backup (salvalo in File o iCloud).</p>
+<div class="actions"><button id="export">Esporta</button><label class="btn ghost">Importa<input id="import" type="file" accept="application/json" hidden></label><button id="clear" class="ghost">Cancella tutto</button></div></section>
+</div>
+<script>
+const TYPES=['Additivo diesel','AdBlue + additivo AdBlue','Tagliando','Cambio gomme','Inversione gomme','Trattamento carrozzeria','Altro'];
+const KEY='garage_peugeot_308_v2',$=id=>document.getElementById(id);
+let rec=JSON.parse(localStorage.getItem(KEY)||'[]');
+const today=()=>new Date().toLocaleDateString('sv'); // AAAA-MM-GG, ora locale
+const eur=n=>(+n||0).toLocaleString('it-IT',{style:'currency',currency:'EUR'});
+const nf=n=>n.toLocaleString('it-IT');
+const dt=d=>new Date(d).toLocaleDateString('it-IT',{day:'numeric',month:'short',year:'numeric'});
+const esc=s=>String(s??'').replace(/[&<>"']/g,c=>'&#'+c.charCodeAt(0)+';');
+const save=()=>{localStorage.setItem(KEY,JSON.stringify(rec));render()};
+
+function dues(){
+ const last={},kmNow=Math.max(0,...rec.map(r=>r.km));
+ [...rec].sort((a,b)=>a.date.localeCompare(b.date)).forEach(r=>last[r.type]=r); // conta solo l'ultimo intervento per tipo
+ return Object.values(last).filter(r=>r.dueKm||r.dueDate).map(r=>{
+  const km=r.dueKm?r.dueKm-kmNow:Infinity,days=r.dueDate?Math.ceil((new Date(r.dueDate)-Date.now())/864e5):Infinity;
+  return{r,km,days,l:km<=0||days<0?2:km<1000||days<30?1:0}
+ }).sort((a,b)=>b.l-a.l||a.days-b.days||a.km-b.km);
+}
+
+function render(){
+ $('count').textContent=rec.length;
+ $('spent').textContent=eur(rec.reduce((s,r)=>s+(+r.cost||0),0));
+ const d=dues();$('duesCard').hidden=!d.length;
+ $('dues').innerHTML=d.map(({r,km,days,l})=>`<div class="due" data-l="${l}"><b>${esc(r.type)}</b><span class="muted">${[
+  km<Infinity&&(km<=0?`${nf(r.dueKm)} km raggiunti`:`tra ${nf(km)} km (${nf(r.dueKm)})`),
+  days<Infinity&&(days<0?`scaduto da ${-days} giorni`:`entro ${dt(r.dueDate)} (${days} giorni)`)].filter(Boolean).join(' · ')}</span></div>`).join('');
+ const f=$('filter').value,list=rec.filter(r=>!f||r.type===f);
+ $('history').innerHTML=list.length?[...list].sort((a,b)=>b.date.localeCompare(a.date)||b.km-a.km).map(r=>`
+ <div class="entry"><div class="top"><strong>${esc(r.type)}</strong><strong>${eur(r.cost)}</strong></div>
+ <div class="muted">${dt(r.date)} · ${nf(+r.km)} km</div>
+ ${r.details?`<div class="muted">${esc(r.details)}</div>`:''}${r.notes?`<div class="muted">${esc(r.notes)}</div>`:''}
+ ${r.dueKm||r.dueDate?`<div class="muted">Prossimo: ${[r.dueKm&&nf(r.dueKm)+' km',r.dueDate&&dt(r.dueDate)].filter(Boolean).join(' o ')}</div>`:''}
+ <button class="ghost" data-id="${esc(r.id)}">Elimina</button></div>`).join(''):'<div class="empty">Nessun intervento.</div>';
+}
+
+$('type').innerHTML=TYPES.map(t=>`<option>${t}</option>`).join('');
+$('filter').innerHTML='<option value="">Tutti i tipi</option>'+TYPES.map(t=>`<option>${t}</option>`).join('');
+$('filter').onchange=render;
+$('date').value=today();
+$('form').onsubmit=e=>{e.preventDefault();
+ rec.push({id:Date.now().toString(36)+Math.random().toString(36).slice(2,6),type:$('type').value,date:$('date').value,km:+$('km').value,cost:+$('cost').value||0,details:$('details').value.trim(),notes:$('notes').value.trim(),dueKm:+$('dueKm').value||0,dueDate:$('dueDate').value});
+ save();e.target.reset();$('date').value=today()};
+$('history').onclick=e=>{const id=e.target.dataset.id;if(id&&confirm('Eliminare questo intervento?')){rec=rec.filter(r=>r.id!==id);save()}};
+$('export').onclick=()=>{const a=document.createElement('a');a.href=URL.createObjectURL(new Blob([JSON.stringify(rec,null,2)],{type:'application/json'}));a.download='backup-garage-308.json';a.click();URL.revokeObjectURL(a.href)};
+$('import').onchange=async e=>{try{const d=JSON.parse(await e.target.files[0].text());if(!Array.isArray(d)||!d.every(r=>r&&r.id&&r.date&&r.type))throw 0;if(confirm('Importare? I dati attuali saranno sostituiti.')){rec=d;save()}}catch{alert('File di backup non valido.')}e.target.value=''};
+$('clear').onclick=()=>{if(confirm('Cancellare tutti gli interventi?')){rec=[];save()}};
+render();
+navigator.storage?.persist?.();                      // chiede a iOS di non svuotare i dati
+navigator.serviceWorker?.register('sw.js').catch(()=>{}); // uso offline, richiede https
+</script>
+</body>
+</html>
